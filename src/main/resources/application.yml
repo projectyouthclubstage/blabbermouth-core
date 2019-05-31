@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: pidevngb04:9094,pidevngb02:9094,pidevngb03:9094,pidevngb01:9094
+      bindings:
+        input:
+          destination: youthclubstage
+          contentType: application/json
+        output:
+          destination: youthclubstage
+          contentType: application/json

@@ -1,0 +1,104 @@
+node{
+  stage ('Checkout')
+  {
+    git credentialsId: 'dda5545e-4716-4f37-b489-540b31e40aa4', url: 'https://git.deeg-solutions.de/project-blabbermouth/node-api.git'
+    sh "git clean -f && git reset --hard origin/master"
+  }
+    stage ('Test') {
+
+      withMaven(
+          // Maven installation declared in the Jenkins "Global Tool Configuration"
+          maven: 'Mvn3',
+          jdk: 'jdk8o',
+          // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
+          // Maven settings and global settings can also be defined in Jenkins Global Tools Configuration
+          mavenSettingsConfig: 'fb8cee2a-9015-4aca-ace4-2df4dfd04bba',
+          mavenLocalRepo: '.repository') {
+
+        // Run the maven build
+        sh "mvn clean cobertura:cobertura"
+
+        step([$class: 'CoberturaPublisher', autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: '**/coverage.xml', failUnhealthy: false, failUnstable: false, maxNumberOfBuilds: 0, onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false])
+
+      } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe & FindBugs reports...
+    }
+  stage ('Build') {
+
+    withMaven(
+        // Maven installation declared in the Jenkins "Global Tool Configuration"
+        maven: 'Mvn3',
+        jdk: 'jdk8o',
+        // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
+        // Maven settings and global settings can also be defined in Jenkins Global Tools Configuration
+        mavenSettingsConfig: 'fb8cee2a-9015-4aca-ace4-2df4dfd04bba',
+        mavenLocalRepo: '.repository') {
+
+      // Run the maven build
+      sh "mvn clean install"
+
+    } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe & FindBugs reports...
+  }
+
+  stage ('Deploy') {
+
+    withMaven(
+        // Maven installation declared in the Jenkins "Global Tool Configuration"
+        maven: 'Mvn3',
+        jdk: 'jdk8o',
+        // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
+        // Maven settings and global settings can also be defined in Jenkins Global Tools Configuration
+        mavenSettingsConfig: 'fb8cee2a-9015-4aca-ace4-2df4dfd04bba',
+        mavenLocalRepo: '.repository') {
+
+      // Run the maven build
+      sh "mvn deploy"
+
+    } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe & FindBugs reports...
+  }
+
+  stage ('Release') {
+       def release = input(message: 'Release?', ok: 'Yes',
+                        parameters: [booleanParam(defaultValue: false,
+                        description: 'Release?',name: 'Yes?')])
+    if(release){
+        withCredentials([usernamePassword(credentialsId: 'dda5545e-4716-4f37-b489-540b31e40aa4', usernameVariable: 'username', passwordVariable: 'password')]){
+            def gitrepo = "https://$username:$password@git.deeg-solutions.de/project-blabbermouth/node-api.git"
+            releaseBuild(gitrepo)
+        }
+    }
+  }
+
+
+
+}
+
+  def releaseBuild(String repo)
+  {
+
+
+    withMaven(
+        // Maven installation declared in the Jenkins "Global Tool Configuration"
+        maven: 'Mvn3',
+        jdk: 'jdk8o',
+        // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
+        // Maven settings and global settings can also be defined in Jenkins Global Tools Configuration
+        mavenSettingsConfig: 'fb8cee2a-9015-4aca-ace4-2df4dfd04bba',
+        mavenLocalRepo: '.repository') {
+
+        // Run the maven build
+        def pom = readMavenPom file: 'pom.xml'
+        def version = pom.version.replace("-SNAPSHOT", "")
+        def anfang = version.substring(0,version.lastIndexOf('.')+1);
+        def newNumber= (((CharSequence) version.substring(version.lastIndexOf('.')+1, version.length())).toInteger() +1)
+        def newVersion = anfang + newNumber + "-SNAPSHOT"
+
+        sh "mvn release:clean"
+        sh "mvn -DreleaseVersion=${version} -DdevelopmentVersion=${newVersion} -DpushChanges=false -DlocalCheckout=true -DaltDeploymentRepository=deegsolutionrepo::default::https://archiva.deeg-solutions.de/repository/deegsolutionrepo -DpreparationGoals=initialize release:prepare release:perform -B"
+        sh "git push $repo --tags"
+        sh "git push $repo"
+
+
+    } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe & FindBugs reports...
+
+
+  }
