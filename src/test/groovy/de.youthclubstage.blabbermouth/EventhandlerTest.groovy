@@ -1,5 +1,5 @@
 package de.project.blabbermouth.nodeapi
-
+/*
 import de.youthclubstage.blabbermouth.core.App
 import de.youthclubstage.blabbermouth.core.EventHandler
 import de.youthclubstage.blabbermouth.core.EventSender
@@ -77,4 +77,4 @@ class EventhandlerTest extends Specification {
 
     }
 
-}
+}*/
