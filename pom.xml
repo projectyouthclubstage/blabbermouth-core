@@ -10,7 +10,7 @@
 
 	<groupId>de.youth-club-stage.backend</groupId>
 	<artifactId>blabbermouth-core</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.2-SNAPSHOT</version>
 	<name>blabbermouth-core</name>
 	<description />
 
@@ -209,5 +209,17 @@
 			</plugin>
 		</plugins>
 	</reporting>
+
+	<distributionManagement>
+		<repository>
+			<id>deegsolutionrepo</id>
+			<url>https://archiva.youthclubstage.de/repository/youthclubstage/</url>
+			<layout>default</layout>
+		</repository>
+		<snapshotRepository>
+			<id>deegsolutionrepo</id>
+			<url>https://archiva.youthclubstage.de/repository/youthclubstage/</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 </project>
