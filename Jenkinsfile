@@ -63,11 +63,6 @@ stages{
 
 
     withMaven(
-        // Maven installation declared in the Jenkins "Global Tool Configuration"
-        maven: 'Mvn3',
-        jdk: 'jdk8o',
-        // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
-        // Maven settings and global settings can also be defined in Jenkins Global Tools Configuration
         mavenSettingsConfig: '53fc6614-b570-41b3-b18c-574ba701725f',
         mavenLocalRepo: '.repository') {
 
