@@ -47,9 +47,11 @@ stages{
          label 'master'
     }
      steps {
+     script{
        docker.image('arm32v7/maven:3-jdk-8-alpine').inside{
            releaseBuild()
           }
+         }
          }
     }
 
