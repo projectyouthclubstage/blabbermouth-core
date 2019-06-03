@@ -20,7 +20,7 @@ stages{
     stage('Build'){
     agent {
         docker {
-            image 'arm32v7/maven'
+          image 'arm32v7/maven:3-jdk-8-alpine'
         }
     }
      steps {
@@ -32,7 +32,7 @@ stages{
     stage('Unit Test'){
     agent {
        docker {
-           image 'arm32v7/maven'
+          image 'arm32v7/maven:3-jdk-8-alpine'
           }
     }
      steps {
@@ -44,7 +44,7 @@ stages{
     stage('Release Build'){
     agent {
       docker {
-          image 'arm32v7/maven'
+          image 'arm32v7/maven:3-jdk-8-alpine'
           }
       }
      steps {
