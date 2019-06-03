@@ -36,11 +36,56 @@ stages{
           }
     }
      steps {
-        sh "mvn -B test"
+         //sh "mvn -B test"
         }
     }
+
+    // Run Maven unit tests
+    stage('Release Build'){
+    agent {
+      docker {
+          image 'arm32v7/maven'
+          }
+      }
+     steps {
+          releaseBuild()
+         }
+    }
+
 
 
    }
 
 }
+
+  def releaseBuild()
+  {
+
+
+    withMaven(
+        // Maven installation declared in the Jenkins "Global Tool Configuration"
+        maven: 'Mvn3',
+        jdk: 'jdk8o',
+        // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
+        // Maven settings and global settings can also be defined in Jenkins Global Tools Configuration
+        mavenSettingsConfig: '53fc6614-b570-41b3-b18c-574ba701725f',
+        mavenLocalRepo: '.repository') {
+
+        // Run the maven build
+        def pom = readMavenPom file: 'pom.xml'
+        def version = pom.version.replace("-SNAPSHOT", "")
+        def anfang = version.substring(0,version.lastIndexOf('.')+1);
+        def newNumber= (((CharSequence) version.substring(version.lastIndexOf('.')+1, version.length())).toInteger() +1)
+        def newVersion = anfang + newNumber + "-SNAPSHOT"
+
+        sh "mvn release:clean"
+        sh "mvn -DreleaseVersion=${version} -DdevelopmentVersion=${newVersion} -DpushChanges=false -DlocalCheckout=true -DaltDeploymentRepository=youthclubstage::default::https://archiva.youthclubstage.de/repository/youthclubstage -DpreparationGoals=initialize release:prepare release:perform -B"
+        sh "git push --tags"
+        sh "git push"
+
+
+    } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe & FindBugs reports...
+
+
+  }
+
