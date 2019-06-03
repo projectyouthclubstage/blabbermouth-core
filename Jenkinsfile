@@ -48,9 +48,7 @@ stages{
     }
      steps {
      script{
-       docker.image('arm32v7/maven:3-jdk-8-alpine').inside{
            releaseBuild()
-          }
          }
          }
     }
@@ -66,6 +64,8 @@ stages{
 
 
     withMaven(
+        maven: 'Mvn3',
+        jdk: 'jdk8',
         mavenSettingsConfig: '53fc6614-b570-41b3-b18c-574ba701725f',
         mavenLocalRepo: '.repository') {
 

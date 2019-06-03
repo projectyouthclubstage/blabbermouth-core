@@ -79,7 +79,7 @@ node{
     withMaven(
         // Maven installation declared in the Jenkins "Global Tool Configuration"
         maven: 'Mvn3',
-        jdk: 'jdk8o',
+        jdk: 'jdk8',
         // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
         // Maven settings and global settings can also be defined in Jenkins Global Tools Configuration
         mavenSettingsConfig: 'fb8cee2a-9015-4aca-ace4-2df4dfd04bba',
