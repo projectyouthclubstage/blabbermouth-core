@@ -36,7 +36,7 @@ stages{
           }
     }
      steps {
-         //sh "mvn -B test"
+         sh "mvn -B test"
         }
     }
 
