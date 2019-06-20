@@ -57,9 +57,9 @@ stages{
         def newVersion = anfang + newNumber + "-SNAPSHOT"
 
         sh "mvn release:clean"
-        sh "mvn -DreleaseVersion=${version} -DdevelopmentVersion=${newVersion} -DpushChanges=false -DlocalCheckout=false -DaltDeploymentRepository=deegsolutionrepo::default::https://archiva.youthclubstage.de/repository/youthclubstage -DpreparationGoals=initialize release:prepare release:perform -B"
-        sh "git push --tags"
-        sh "git push"
+        sh "mvn -DreleaseVersion=${version} -DdevelopmentVersion=${newVersion} -DpushChanges=true -DlocalCheckout=false -DaltDeploymentRepository=deegsolutionrepo::default::https://archiva.youthclubstage.de/repository/youthclubstage -DpreparationGoals=initialize release:prepare release:perform -B"
+        //sh "git push --tags"
+        //sh "git push"
 
 
     } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe & FindBugs reports...
