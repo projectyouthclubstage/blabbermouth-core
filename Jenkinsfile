@@ -24,7 +24,7 @@ stages{
         }
     }
      steps {
-        sh "mvn -B clean install -DskipTests=true"
+        //sh "mvn -B clean install -DskipTests=true"
         }
     }
 
@@ -36,7 +36,7 @@ stages{
           }
     }
      steps {
-         sh "mvn -B test"
+         //sh "mvn -B test"
         }
     }
 
