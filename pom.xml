@@ -16,7 +16,7 @@
 
 	<scm>
 		<connection>scm:git:https://${env.GIT_USERNAME}:${env.GIT_PASSWORD}@github.com/projectyouthclubstage/blabbermouth-core.git</connection>
-		<developerConnection>scm:git:https://github.com/projectyouthclubstage/blabbermouth-core.git</developerConnection>
+		<developerConnection>scm:git:https://${env.GIT_USERNAME}:${env.GIT_PASSWORD}@github.com/projectyouthclubstage/blabbermouth-core.git</developerConnection>
 	</scm>
 
 
