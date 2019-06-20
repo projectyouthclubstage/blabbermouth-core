@@ -26,6 +26,10 @@ stages{
     }
      steps {
      script{
+       def release = input(message: 'Release?', ok: 'Yes',
+                        parameters: [booleanParam(defaultValue: false,
+                        description: 'Release?',name: 'Yes?')])
+    if(release){
        withCredentials([[$class: 'UsernamePasswordMultiBinding', 
     credentialsId: 'github-pipline-token', 
     usernameVariable: 'GIT_USERNAME',
@@ -35,6 +39,7 @@ stages{
            releaseBuild()
        }
          }
+     }
          }
     }
 
