@@ -58,7 +58,8 @@ stages{
         sh "git config --global user.email sascha.deeg@gmail.com"
         sh "git config --global user.name 'Sascha Deeg'"
         sh "git checkout master"
-        sh "git reset --hard"
+        sh "git reset --hard origin/master"
+        sh "git clean -fxd"
         sh "git pull"
         def pom = readMavenPom file: 'pom.xml'
         def version = pom.version.replace("-SNAPSHOT", "")
@@ -67,7 +68,7 @@ stages{
         def newVersion = anfang + newNumber + "-SNAPSHOT"
 
         sh "mvn release:clean"
-        sh "mvn -DreleaseVersion=${version} -DdevelopmentVersion=${newVersion} -DpushChanges=true -DlocalCheckout=false -DaltDeploymentRepository=deegsolutionrepo::default::https://archiva.youthclubstage.de/repository/youthclubstage -DpreparationGoals=initialize release:prepare release:perform -B"
+        sh "mvn -Dmaven.test.skip=true -DreleaseVersion=${version} -DdevelopmentVersion=${newVersion} -DpushChanges=true -DlocalCheckout=false -DaltDeploymentRepository=deegsolutionrepo::default::https://archiva.youthclubstage.de/repository/youthclubstage -DpreparationGoals=initialize release:prepare release:perform -B"
         //sh "git push --tags"
         //sh "git push"
 
