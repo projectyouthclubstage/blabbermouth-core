@@ -16,29 +16,7 @@ agent none
 
 stages{
 
-    // Run Maven build, skipping tests
-    stage('Build'){
-    agent {
-        docker {
-          image 'arm32v7/maven:3-jdk-8-alpine'
-        }
-    }
-     steps {
-        //sh "mvn -B clean install -DskipTests=true"
-        }
-    }
 
-    // Run Maven unit tests
-    stage('Unit Test'){
-    agent {
-       docker {
-          image 'arm32v7/maven:3-jdk-8-alpine'
-          }
-    }
-     steps {
-         //sh "mvn -B test"
-        }
-    }
 
     // Run Maven unit tests
     stage('Release Build'){
