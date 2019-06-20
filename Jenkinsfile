@@ -26,7 +26,14 @@ stages{
     }
      steps {
      script{
+       withCredentials([[$class: 'UsernamePasswordMultiBinding', 
+    credentialsId: 'github-pipline-token', 
+    usernameVariable: 'GIT_USERNAME',
+    passwordVariable: 'GIT_PASSWORD'
+]]) {
+       
            releaseBuild()
+       }
          }
          }
     }
@@ -51,6 +58,8 @@ stages{
         sh "git config --global user.email sascha.deeg@gmail.com"
         sh "git config --global user.name 'Sascha Deeg'"
         sh "git checkout master"
+        sh "git reset --hard"
+        sh "git pull"
         def pom = readMavenPom file: 'pom.xml'
         def version = pom.version.replace("-SNAPSHOT", "")
         def anfang = version.substring(0,version.lastIndexOf('.')+1);
@@ -58,7 +67,7 @@ stages{
         def newVersion = anfang + newNumber + "-SNAPSHOT"
 
         sh "mvn release:clean"
-        sh "mvn -DreleaseVersion=${version} -DdevelopmentVersion=${newVersion} -DpushChanges=false -DlocalCheckout=false -DaltDeploymentRepository=deegsolutionrepo::default::https://archiva.youthclubstage.de/repository/youthclubstage -DpreparationGoals=initialize release:prepare release:perform -B"
+        sh "mvn -DreleaseVersion=${version} -DdevelopmentVersion=${newVersion} -DpushChanges=true -DlocalCheckout=false -DaltDeploymentRepository=deegsolutionrepo::default::https://archiva.youthclubstage.de/repository/youthclubstage -DpreparationGoals=initialize release:prepare release:perform -B"
         //sh "git push --tags"
         //sh "git push"
 
