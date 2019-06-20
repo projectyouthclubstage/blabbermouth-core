@@ -16,7 +16,7 @@ agent none
 
 stages{
   
-    stage('Build'){
+    stage('Prepare'){
     agent {
          label 'master'
     }
