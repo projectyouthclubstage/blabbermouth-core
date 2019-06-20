@@ -57,7 +57,7 @@ stages{
         def newVersion = anfang + newNumber + "-SNAPSHOT"
 
         sh "mvn release:clean"
-        sh "mvn -DreleaseVersion=${version} -DdevelopmentVersion=${newVersion} -DpushChanges=false -DlocalCheckout=true -DaltDeploymentRepository=deegsolutionrepo::default::https://archiva.youthclubstage.de/repository/youthclubstage -DpreparationGoals=initialize release:prepare release:perform -B"
+        sh "mvn -DreleaseVersion=${version} -DdevelopmentVersion=${newVersion} -DpushChanges=false -DlocalCheckout=true -DaltDeploymentRepository=deegsolutionrepo::default::https://archiva.youthclubstage.de/repository/youthclubstage -DpreparationGoals=initialize -Dmaven.test.skip=true release:prepare release:perform -B"
         sh "git push --tags"
         sh "git push"
 
