@@ -10,7 +10,7 @@
 
 	<groupId>de.youth-club-stage.backend</groupId>
 	<artifactId>blabbermouth-core</artifactId>
-	<version>1.0.7-SNAPSHOT</version>
+	<version>1.0.8-SNAPSHOT</version>
 	<name>blabbermouth-core</name>
 	<description />
 
