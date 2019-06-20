@@ -50,6 +50,7 @@ stages{
         // Run the maven build
         sh "git config --global user.email sascha.deeg@gmail.com"
         sh "git config --global user.name 'Sascha Deeg'"
+        sh "git checkout master"
         def pom = readMavenPom file: 'pom.xml'
         def version = pom.version.replace("-SNAPSHOT", "")
         def anfang = version.substring(0,version.lastIndexOf('.')+1);
