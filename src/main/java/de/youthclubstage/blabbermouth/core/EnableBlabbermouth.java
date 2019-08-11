@@ -1,6 +1,5 @@
 package de.youthclubstage.blabbermouth.core;
 
-import de.youthclubstage.blabbermouth.core.CoreConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 

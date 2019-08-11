@@ -15,6 +15,9 @@ public class EventMessage {
     private Integer state;
     private String content;
     private Long version;
+    private Long retryCount = 0L;
+    private boolean isRetryMessage = false;
+    private UUID previousMessage;
 
     public Object getContextAs(Class returnClass) throws IOException {
         ObjectMapper mapper = new ObjectMapper();

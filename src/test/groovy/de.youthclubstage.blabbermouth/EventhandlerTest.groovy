@@ -1,4 +1,4 @@
-package de.project.blabbermouth.nodeapi
+package de.youthclubstage.blabbermouth
 
 import de.youthclubstage.blabbermouth.core.App
 import de.youthclubstage.blabbermouth.core.EventHandler

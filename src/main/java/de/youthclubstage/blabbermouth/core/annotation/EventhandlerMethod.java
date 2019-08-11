@@ -10,4 +10,5 @@ import java.lang.annotation.Target;
 public @interface EventhandlerMethod {
     int process();
     int state();
+    EventType eventTyp() default EventType.FUNCTION;
 }
