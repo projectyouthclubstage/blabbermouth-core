@@ -73,6 +73,7 @@ public class EventHandler {
     }
 
     private void retry(EventMessage message){
+        message.setPreviousMessage(message.getId());
         message.setId(UUID.randomUUID());
         message.setRetryCount(message.getRetryCount() == null ? 1L :(message.getRetryCount()+1L));
         message.setRetryMessage(true);
