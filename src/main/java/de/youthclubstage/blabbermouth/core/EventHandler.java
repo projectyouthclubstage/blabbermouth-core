@@ -57,7 +57,11 @@ public class EventHandler {
         if (eventMethodInfos != null) {
             try {
                 for (EventMethodInfo method : eventMethodInfos) {
-                    method.getMethod().invoke(method.getObject(), message);
+                    EventMessage newMessage = (EventMessage) method.getMethod().invoke(method.getObject(), message);
+                    if(newMessage != null)
+                    {
+                        sendEvent(newMessage,message);
+                    }
                 }
             } catch (Exception e) {
                 LOGGER.error("EventHander", e);
@@ -73,11 +77,22 @@ public class EventHandler {
     }
 
     private void retry(EventMessage message){
-        message.setPreviousMessage(message.getId());
-        message.setId(UUID.randomUUID());
-        message.setRetryCount(message.getRetryCount() == null ? 1L :(message.getRetryCount()+1L));
-        message.setRetryMessage(true);
+        EventMessage newMessage = message.deepClone();
+        newMessage.setPreviousMessage(newMessage.getId());
+        newMessage.setId(UUID.randomUUID());
+        newMessage.setRetryCount(newMessage.getRetryCount() == null ? 1L :(newMessage.getRetryCount()+1L));
+        newMessage.setRetryMessage(true);
+        eventSender.sendEvent(newMessage);
     }
+
+    private void sendEvent(EventMessage newMessage, EventMessage oldMessage){
+        newMessage.setPreviousMessage(oldMessage.getId());
+        if(newMessage.getId() == null){
+            newMessage.setId(UUID.randomUUID());
+        }
+        eventSender.sendEvent(newMessage);
+    }
+
 
     private void buildEventHandler() {
         methods = new HashMap<>();

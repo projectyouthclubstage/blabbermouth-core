@@ -2,12 +2,16 @@ package de.youthclubstage.blabbermouth.core.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.util.UUID;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class EventMessage {
 
     private UUID id;
@@ -27,6 +31,10 @@ public class EventMessage {
     public void setContextFrom(Object object) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         content = mapper.writeValueAsString(object);
+    }
+
+    public EventMessage deepClone(){
+        return new EventMessage(id,process,state,content,version,retryCount,isRetryMessage,previousMessage);
     }
 
 }
